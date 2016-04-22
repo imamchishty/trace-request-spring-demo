@@ -3,17 +3,18 @@ package com.emc.awg.demo.rest.controller;
 import com.emc.awg.demo.model.Parcel;
 import com.emc.awg.demo.model.SecretDocument;
 import com.emc.awg.demo.rest.feign.client.ServiceClient;
+import com.emc.awg.demo.rest.feign.client.ServiceClient13;
+import com.shedhack.exception.core.BusinessException;
 import com.shedhack.thread.context.annotation.ThreadContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -23,18 +24,30 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class DistrictController {
 
     private static final int DISTRICTS = 13;
+
     @Autowired
     private ServiceClient client;
 
+    @Autowired
+    private ServiceClient13 client13;
+
     AtomicInteger count = new AtomicInteger(0);
+
+    AtomicBoolean error = new AtomicBoolean(false);
 
     @ThreadContext
     @RequestMapping(value = "/api/share-secret", method = RequestMethod.GET)
-    ResponseEntity<Boolean> secret() {
-        count.set(0);
+    ResponseEntity<Boolean> secret(@RequestParam(required = false) boolean errorFlag,
+                                   @RequestParam(required = false) boolean shuffle) {
 
-        List<String> districts = Arrays.asList("district1", "district2", "district3", "district4", "district5", "district6",
-                "district7", "district8", "district9", "district10", "district11", "district12", "district13");
+        count.set(0);
+        error.set(errorFlag);
+
+        List<String> districts = Arrays.asList("district13", "district2", "district3", "district4", "district5", "district6",
+                "district7", "district8", "district9", "district10", "district11", "district12", "district1");
+
+        if(shuffle)
+        Collections.shuffle(districts);
 
         return new ResponseEntity<>(whichDistrict(new Parcel(new SecretDocument("we have someone on the inside"), districts)), HttpStatus.OK);
     }
@@ -114,6 +127,10 @@ public class DistrictController {
     @ThreadContext
     @RequestMapping(value = "/api/district13/message", method = RequestMethod.POST)
     ResponseEntity<Boolean> district13(@RequestBody Parcel parcel) {
+
+        if(error.get()) {
+            throw new BusinessException.Builder("Secret message intercepted").build();
+        }
         return new ResponseEntity<>(whichDistrict(parcel), HttpStatus.OK);
     }
 
@@ -122,6 +139,7 @@ public class DistrictController {
         if(count.get() >= DISTRICTS) {
             return Boolean.TRUE;
         }
+
 
         String district = parcel.getDistricts().get(count.getAndIncrement());
 
@@ -163,7 +181,7 @@ public class DistrictController {
                 return client.district12(parcel).getBody();
 
             case "district13":
-                return client.district13(parcel).getBody();
+                return client13.district13(parcel).getBody();
             default:
                 return Boolean.FALSE;
         }

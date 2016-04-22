@@ -26,22 +26,32 @@ management.contextPath: /admin
 # Custom actuators
 exception.interceptor.queue.size: 50
 exception.interceptor.endpoint: exceptions
-exception.interceptor.stacktrace: true
+exception.interceptor.stacktrace: false
 trace.interceptor.queue.size: 50
 trace.interceptor.endpoint: requests
 
 
 # Trace Request JPA requires these settings
 # Please modify for your desired DB. Currently uses an inmemory instance of HSQL.
+#trace-request:
+#  hibernate:
+#    hbm2ddl.auto: create-drop
+#    dialect: org.hibernate.dialect.HSQLDialect
+#  jdbc:
+#    driverClassName: org.hsqldb.jdbc.JDBCDriver
+#    url: jdbc:hsqldb:file:request
+#    user: SA
+#    pass:
+
 trace-request:
   hibernate:
-    hbm2ddl.auto: create-drop
-    dialect: org.hibernate.dialect.HSQLDialect
+    hbm2ddl.auto: none
+    dialect: org.hibernate.dialect.PostgreSQLDialect
   jdbc:
-    driverClassName: org.hsqldb.jdbc.JDBCDriver
-    url: jdbc:hsqldb:file:request
-    user: SA
-    pass:
+    driverClassName: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/trace_request
+    user: postgres
+    pass: postgres@123
 
 # Properties used by /admin/info and /admin/build endpoints.
 info.app.name: ${spring.application.name}
