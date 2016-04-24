@@ -43,8 +43,8 @@ public class DistrictController {
         count.set(0);
         error.set(errorFlag);
 
-        List<String> districts = Arrays.asList("district13", "district2", "district3", "district4", "district5", "district6",
-                "district7", "district8", "district9", "district10", "district11", "district12", "district1");
+        List<String> districts = Arrays.asList("district1", "district2", "district3", "district4", "district5", "district6",
+                "district7", "district8", "district9", "district10", "district11", "district12", "district13");
 
         if(shuffle)
         Collections.shuffle(districts);
