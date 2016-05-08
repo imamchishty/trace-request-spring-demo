@@ -16,4 +16,4 @@ clear
 echo --------------------------------------------------------------------
 echo Starting demo-trace-rest using $SPRING_PROFILE profile
 echo --------------------------------------------------------------------
-mvn clean package $SKIP_TESTS && java -Xms128m -Xmx256m -jar  demo-trace-rest/target/demo-trace-rest.jar --spring.profiles.active=$SPRING_PROFILE
+mvn clean package $SKIP_TESTS && java -Xms128m -Xmx256m -XX:+UnlockCommercialFeatures -XX:+FlightRecorder -jar  demo-trace-rest/target/demo-trace-rest.jar --spring.profiles.active=$SPRING_PROFILE

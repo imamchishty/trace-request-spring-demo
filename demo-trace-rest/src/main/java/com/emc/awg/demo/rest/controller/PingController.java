@@ -4,6 +4,7 @@ import com.emc.awg.demo.rest.feign.client.ServiceClient;
 import com.emc.awg.demo.exception.GlobalBusinessCodes;
 import com.emc.awg.demo.rest.constant.ApiConstants;
 import com.shedhack.exception.core.BusinessException;
+import com.shedhack.thread.context.annotation.Ignore;
 import com.shedhack.thread.context.annotation.ThreadContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

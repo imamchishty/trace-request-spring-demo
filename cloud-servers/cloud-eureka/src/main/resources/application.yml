@@ -1,7 +1,9 @@
 spring:
   application:
-    name: demo-eureka-server
+    name: eureka
   profiles: default
+
+# If you want to store these settings in the config server prefixed with [spring, e.g. spring.cloud.config]
 #  cloud:
 #    config:
 #      uri: http://localhost:8070

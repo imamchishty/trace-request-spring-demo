@@ -36,7 +36,7 @@ public class DistrictController {
     AtomicBoolean error = new AtomicBoolean(false);
 
     @ThreadContext
-    @RequestMapping(value = "/api/share-secret", method = RequestMethod.GET)
+    @RequestMapping(value = "/api/districts", method = RequestMethod.GET)
     ResponseEntity<Boolean> secret(@RequestParam(required = false) boolean errorFlag,
                                    @RequestParam(required = false) boolean shuffle) {
 

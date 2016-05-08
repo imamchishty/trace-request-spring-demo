@@ -6,4 +6,4 @@ spring:
     name: demo-trace-rest
 
 # If you wish to use Spring Cloud Config then set the path accordingly
-#spring.cloud.config.uri: http://localhost:8070
+spring.cloud.config.uri: http://localhost:8070
